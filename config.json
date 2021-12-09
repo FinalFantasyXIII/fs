@@ -1,0 +1,13 @@
+{
+  "address":"127.0.0.1:80",
+  "routers":[
+    {
+      "server_path":"/China",
+      "local_path":"D:/user/helin/Desktop/S2B2C"
+    },
+    {
+      "server_path":"/Japan",
+      "local_path":"D:/user/helin/Desktop/S2B2C"
+    }
+  ]
+}
