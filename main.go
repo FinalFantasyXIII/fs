@@ -8,6 +8,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 )
 
 type Config struct {
@@ -78,7 +80,14 @@ func (server *SamllFileServer) Start(){
 }
 
 
-
+func waitForSignal() os.Signal {
+	signalChan := make(chan os.Signal, 1)
+	defer close(signalChan)
+	signal.Notify(signalChan, os.Kill, os.Interrupt)
+	s := <-signalChan
+	signal.Stop(signalChan)
+	return s
+}
 
 func main(){
 	conf ,err := LoadConfig("config.json")
@@ -90,4 +99,7 @@ func main(){
 	server.SetMiddleWare()
 	server.Load()
 	server.Start()
+
+	signalNumber := waitForSignal()
+	log.Println("signal received, broker closed.", signalNumber)
 }
