@@ -3,17 +3,17 @@
   "mysql": {
     "address":"127.0.0.1:3306",
     "user": "root",
-    "key": "",
+    "key": "123",
     "db": "fs"
   },
   "routers":[
     {
       "server_path":"/China",
-      "local_path":"D:/user/helin/Desktop/S2B2C"
+      "local_path":"D:"
     },
     {
       "server_path":"/Japan",
-      "local_path":"D:/user/helin/Desktop/S2B2C"
+      "local_path":"D:"
     }
   ]
 }

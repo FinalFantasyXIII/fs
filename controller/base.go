@@ -7,7 +7,7 @@ import (
 	"fs/model"
 	"fs/router"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
@@ -25,8 +25,9 @@ type SamllFileServer struct {
 
 func NewSamllFileServer(conf *config.Config) *SamllFileServer {
 	r := router.NewRouter()
-	dns := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",conf.Mysql.User,conf.Mysql.Key,conf.Mysql.Address,conf.Mysql.DB)
-	mysqlConn ,err := gorm.Open(sqlite.Open(dns),&gorm.Config{})
+	dns := fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8",conf.Mysql.User,conf.Mysql.Key,conf.Mysql.Address,conf.Mysql.DB)
+	fmt.Println(dns)
+	mysqlConn ,err := gorm.Open(mysql.Open(dns),&gorm.Config{})
 	if err != nil {
 		log.Panic("DB init error",err)
 	}
