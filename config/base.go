@@ -21,6 +21,7 @@ type Mysql struct {
 type FileTree struct {
 	ServerPath string `json:"server_path"`
 	LocalPath  string `json:"local_path"`
+	Forbidden  []string `json:"forbidden"`
 }
 
 func LoadConfig(filename string) (*Config, error) {

@@ -24,8 +24,7 @@ func main() {
 	}
 
 	server := controller.NewSamllFileServer(conf)
-	server.SetMiddleWare()
-	server.Load()
+	server.Load("html/*")
 	server.Start()
 
 	signalNumber := waitForSignal()

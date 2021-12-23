@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 )
@@ -42,10 +43,14 @@ func NewSamllFileServer(conf *config.Config) *SamllFileServer {
 	return server
 }
 
-func (server *SamllFileServer) Load() {
+func (server *SamllFileServer) Load(path string) {
 	if len(server.config.Routers) < 1 {
 		log.Panic("请设置至少一个路由")
 	}
+
+	server.SetMiddleWare()
+	server.LoadHTML(path)
+
 	for _, v := range server.config.Routers {
 		server.router.StaticFS(v.ServerPath, http.Dir(v.LocalPath))
 	}
@@ -54,6 +59,15 @@ func (server *SamllFileServer) Load() {
 func (server *SamllFileServer) SetMiddleWare() {
 	server.router.Use(gin.Recovery())
 	server.router.Use(middleware.LogPrintter(server.c))
+
+	arrStr := make([]string,0)
+	for _, path := range server.config.Routers{
+		for _,fbd := range path.Forbidden {
+			arrStr = append(arrStr, strings.ReplaceAll(fbd,path.LocalPath,path.ServerPath))
+		}
+	}
+
+	server.router.Use(middleware.CheckForbiddenPath(arrStr))
 }
 
 func (server *SamllFileServer) ProcessAccessLog() {
@@ -93,4 +107,9 @@ func (server *SamllFileServer) Store(logs []map[string]string) {
 func (server *SamllFileServer) Start() {
 	go server.ProcessAccessLog()
 	server.router.Run(server.config.Address)
+}
+
+
+func (server *SamllFileServer) LoadHTML(path string){
+	server.router.LoadHTMLGlob(path)
 }

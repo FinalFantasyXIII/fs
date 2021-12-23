@@ -9,11 +9,18 @@
   "routers":[
     {
       "server_path":"/China",
-      "local_path":"D:"
+      "local_path":"D:",
+      "forbidden": [
+        "D:/go",
+        "D:/user/helin/Desktop/gin/ginS"
+      ]
     },
     {
       "server_path":"/Japan",
-      "local_path":"D:"
+      "local_path":"D:",
+      "forbidden": [
+        "D:/go"
+      ]
     }
   ]
 }
