@@ -2,15 +2,14 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"strings"
+	"regexp"
 )
 
 func CheckForbiddenPath(forbidden []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var isForbidden bool
 		for _,v := range forbidden{
-			isForbidden = strings.Contains(c.Request.URL.Path, v)
-			if isForbidden {
+			flag , _ := regexp.MatchString(v,c.Request.URL.Path)
+			if flag {
 				c.HTML(200,"pig.html",nil)
 				c.Abort()
 			}
